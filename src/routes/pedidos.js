@@ -101,7 +101,9 @@ router.get('/:id', buscarPedidoPorId);
  *           schema:
  *             type: object
  *             required:
- *               # QUESTÃO 8: complete aqui com os campos obrigatórios
+ *               - cliente
+ *               - restaurante
+ *               - item
  *             properties:
  *               cliente:     { type: string, example: Ana Lima }
  *               restaurante: { type: string, example: Hamburgão Express }
@@ -113,8 +115,13 @@ router.get('/:id', buscarPedidoPorId);
  *         content:
  *           application/json:
  *             schema:
- *               # QUESTÃO 8: complete aqui com $ref correto
- *       # QUESTÃO 8: adicione aqui a resposta de erro adequada
+ *               $ref: "#/components/schemas/Pedido"
+ *       "400":
+ *         description: Dados de entrada inválidos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Erro"
  */
 router.post('/', criarPedido);
 
@@ -141,7 +148,28 @@ router.post('/', criarPedido);
  *     responses:
  *       "200":
  *         description: Status atualizado com sucesso.
- *       # QUESTÃO 8 / complemento: adicione as respostas de erro 400, 404 e 422
+ *         content:
+ *         application/json:
+ *           schema:
+ *             $ref: "#/components/schemas/Pedido"
+ *      "400":
+ *         description: Dados de entrada inválidos.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Erro"
+ *      "404":
+ *         description: Pedido não encontrado.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Erro"
+ *       "422":
+ *         description: Transição de status inválida.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: "#/components/schemas/Erro"
  */
 router.patch('/:id/status', atualizarStatus);
 
