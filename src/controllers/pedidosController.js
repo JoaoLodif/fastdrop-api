@@ -27,7 +27,11 @@ export const excluirPedido = (req, res) => {
 
 // ── QUESTÃO 7: implemente buscarPedidoPorId ───────────────────────────────────
 export const buscarPedidoPorId = (req, res) => {
-  // TODO
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) return res.status(400).json({ "erro": 'O parâmetro id deve ser um número inteiro.' });
+  const pedido = pedidos.find((p) => p.id === id);
+  if (!pedido) return res.status(404).json({ "erro": `Pedido não encontrado.` });
+  res.status(200).json(pedido);
 };
 
 // ── QUESTÃO 9: implemente atualizarStatus ────────────────────────────────────
