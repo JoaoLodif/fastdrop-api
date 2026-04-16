@@ -36,5 +36,17 @@ export const buscarPedidoPorId = (req, res) => {
 
 // ── QUESTÃO 9: implemente atualizarStatus ────────────────────────────────────
 export const atualizarStatus = (req, res) => {
-  // TODO
+  const id = parseInt(req.params.id, 10);
+  if (isNaN(id)) return res.status(400).json({ "erro": "O parâmetro id deve ser um número inteiro." });
+  const pedido = pedidos.find((p) => p.id === id);
+  if (!pedido) return res.status(404).json({ "erro": "Pedido não encontrado." });
+
+  const { status } = req.body;
+  const statusValidos = ['pendente', 'em_preparo', 'entregue'];
+  if (!status || !statusValidos.includes(status)) {
+    return res.status(422).json({ "erro": "Status inválido. Os valores permitidos são: ${statusValidos.join(', ')}." });
+  }
+
+  pedido.status = status;
+  res.status(200).json(pedido);
 };
